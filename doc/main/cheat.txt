@@ -1,0 +1,11 @@
+Can I convert multiple markdown files to html via command line?
+
+have a look at http://pandoc.org/ or markdown-it https://github.com/markdown-it
+
+It all depends, whether you want to merge the HTMl files or not:
+
+# Single output files
+for f in *.md ; do pandoc --metadata title=Cytosim $f -f markdown -t html -s -o ${f%%.md}.html; done
+
+# One output file
+pandoc *.md -f markdown -t -s html -o merged.html

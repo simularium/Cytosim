@@ -1,0 +1,308 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8C9425262168FDB400F1F595 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C9425252168FDB300F1F595 /* CoreMIDI.framework */; };
+		8C9425282168FE2900F1F595 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C9425272168FE2900F1F595 /* CoreFoundation.framework */; };
+		8C94252A2168FE3600F1F595 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C9425292168FE3600F1F595 /* CoreAudio.framework */; };
+		BBD45AAF2282194E00FA79A8 /* RtMidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD45AAB2282194E00FA79A8 /* RtMidi.cpp */; };
+		BBD45AB02282194E00FA79A8 /* rtmidi_c.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD45AAC2282194E00FA79A8 /* rtmidi_c.cpp */; };
+		BBD45AB22282196300FA79A8 /* cytomaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD45AB12282196300FA79A8 /* cytomaster.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8C4E7A2F2168F4AD003E9927 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		8C4E7A312168F4AD003E9927 /* cytomaster */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = cytomaster; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C9425252168FDB300F1F595 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
+		8C9425272168FE2900F1F595 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		8C9425292168FE3600F1F595 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		BBD45AAB2282194E00FA79A8 /* RtMidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RtMidi.cpp; sourceTree = "<group>"; };
+		BBD45AAC2282194E00FA79A8 /* rtmidi_c.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rtmidi_c.cpp; sourceTree = "<group>"; };
+		BBD45AAD2282194E00FA79A8 /* RtMidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RtMidi.h; sourceTree = "<group>"; };
+		BBD45AAE2282194E00FA79A8 /* rtmidi_c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtmidi_c.h; sourceTree = "<group>"; };
+		BBD45AB12282196300FA79A8 /* cytomaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cytomaster.cpp; sourceTree = "<group>"; };
+		BBD45AB32282ED1300FA79A8 /* makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8C4E7A2E2168F4AD003E9927 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C94252A2168FE3600F1F595 /* CoreAudio.framework in Frameworks */,
+				8C9425282168FE2900F1F595 /* CoreFoundation.framework in Frameworks */,
+				8C9425262168FDB400F1F595 /* CoreMIDI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8C4E7A282168F4AD003E9927 = {
+			isa = PBXGroup;
+			children = (
+				BBD45AB32282ED1300FA79A8 /* makefile */,
+				BBD45AB12282196300FA79A8 /* cytomaster.cpp */,
+				BBD45AAC2282194E00FA79A8 /* rtmidi_c.cpp */,
+				BBD45AAE2282194E00FA79A8 /* rtmidi_c.h */,
+				BBD45AAB2282194E00FA79A8 /* RtMidi.cpp */,
+				BBD45AAD2282194E00FA79A8 /* RtMidi.h */,
+				8C4E7A322168F4AD003E9927 /* Products */,
+				8C9425242168FDB300F1F595 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8C4E7A322168F4AD003E9927 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C4E7A312168F4AD003E9927 /* cytomaster */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8C9425242168FDB300F1F595 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8C9425292168FE3600F1F595 /* CoreAudio.framework */,
+				8C9425272168FE2900F1F595 /* CoreFoundation.framework */,
+				8C9425252168FDB300F1F595 /* CoreMIDI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8C4E7A302168F4AD003E9927 /* cytomaster */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C4E7A382168F4AD003E9927 /* Build configuration list for PBXNativeTarget "cytomaster" */;
+			buildPhases = (
+				8C4E7A2D2168F4AD003E9927 /* Sources */,
+				8C4E7A2E2168F4AD003E9927 /* Frameworks */,
+				8C4E7A2F2168F4AD003E9927 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = cytomaster;
+			productName = cytomaster;
+			productReference = 8C4E7A312168F4AD003E9927 /* cytomaster */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8C4E7A292168F4AD003E9927 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = "Nedelec group";
+				TargetAttributes = {
+					8C4E7A302168F4AD003E9927 = {
+						CreatedOnToolsVersion = 10.0;
+					};
+				};
+			};
+			buildConfigurationList = 8C4E7A2C2168F4AD003E9927 /* Build configuration list for PBXProject "cytomaster" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8C4E7A282168F4AD003E9927;
+			productRefGroup = 8C4E7A322168F4AD003E9927 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8C4E7A302168F4AD003E9927 /* cytomaster */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8C4E7A2D2168F4AD003E9927 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBD45AB02282194E00FA79A8 /* rtmidi_c.cpp in Sources */,
+				BBD45AAF2282194E00FA79A8 /* RtMidi.cpp in Sources */,
+				BBD45AB22282196300FA79A8 /* cytomaster.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		8C4E7A362168F4AD003E9927 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		8C4E7A372168F4AD003E9927 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		8C4E7A392168F4AD003E9927 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLE_MIDI = "-D__MACOSX_CORE__";
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8C4E7A3A2168F4AD003E9927 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLE_MIDI = "-D__MACOSX_CORE__";
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8C4E7A2C2168F4AD003E9927 /* Build configuration list for PBXProject "cytomaster" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C4E7A362168F4AD003E9927 /* Debug */,
+				8C4E7A372168F4AD003E9927 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C4E7A382168F4AD003E9927 /* Build configuration list for PBXNativeTarget "cytomaster" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C4E7A392168F4AD003E9927 /* Debug */,
+				8C4E7A3A2168F4AD003E9927 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8C4E7A292168F4AD003E9927 /* Project object */;
+}
