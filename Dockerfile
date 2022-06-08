@@ -1,22 +1,21 @@
 FROM ubuntu:20.04
 
-RUN mkdir working
-WORKDIR /working
-
 # Copy Cytosim executables
-COPY bin/sim .
-# COPY bin/report .
+COPY bin/sim ./bin
+COPY bin/report ./bin
 
-# # Install necessary libraries
-# RUN apt-get -y update
-# RUN apt-get -y upgrade
-# RUN apt-get -y install --no-install-recommends libx11-dev
+# Install necessary libraries
+RUN apt-get update && apt-get install -y \
+	build-essential \
+	curl \
+	libblas-dev \
+	libhdf5-dev \
+	liblapack-dev
 
-# # Setup shell script
-COPY docker.sh .
-# RUN chmod +x ./docker.sh
+# Setup shell script
+WORKDIR home
+COPY docker.sh /docker.sh
+RUN chmod +x /docker.sh
 
-# Run Sim
-# ENTRYPOINT ["./docker.sh", "/bin/bash", "-l", "-c"]
-# ENTRYPOINT ["./docker.sh"]
-ENTRYPOINT ["./sim", "info"]
+# Run sim and report
+ENTRYPOINT /docker.sh

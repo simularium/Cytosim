@@ -1,6 +1,9 @@
 #!/bin/bash
 
 # Run the model
-ls
-./sim info
-# ./report fiber:points > fiber_points.txt
+cp ../bin/sim .
+cp ../bin/report .
+./sim
+./report fiber:points > fiber_points.txt
+rm sim
+rm report
