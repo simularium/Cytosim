@@ -1,34 +1,39 @@
-set(MATH_SOURCES
-    "${PROJECT_SOURCE_DIR}/src/math/vector1.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/vector2.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/vector3.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/matrix11.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/matrix22.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/matrix33.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/rasterizer.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/matsparsesym1.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/matsparsesymblk.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/polygon.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/pointsonsphere.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/random.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/platonic.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/random_vector.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/project_ellipse.cc"
-    "${PROJECT_SOURCE_DIR}/src/math/SFMT.c"
+set(SOURCES_MATH
+    vector1.cc
+    vector2.cc
+    vector3.cc
+    vector4.cc
+    matrix11.cc
+    matrix22.cc
+    matrix33.cc
+    rasterizer.cc
+    matsparsesym1.cc
+    matsparsesym2.cc
+    matsparsesymblk.cc
+    polygon.cc
+    pointsonsphere.cc
+    random.cc
+    platonic.cc
+    random_vector.cc
+    project_ellipse.cc
+    SFMT.c
 )
 
-add_library(${MATH_LIB_TARGET} STATIC ${MATH_SOURCES})
-target_include_directories(${MATH_LIB_TARGET} PUBLIC
-    "${MATH_SRC_DIR}"
-    "${BASE_SRC_DIR}"
-)
+list(TRANSFORM SOURCES_MATH PREPEND "${PROJECT_SOURCE_DIR}/src/math/")
 
-if(BUILD_CYTOSIM_TESTS)
+set(MATH_INCLUDES math base)
+list(TRANSFORM MATH_INCLUDES PREPEND "${PROJECT_SOURCE_DIR}/src/")
+
+add_library(${MATH_LIBRARY} STATIC ${SOURCES_MATH})
+target_include_directories(${MATH_LIBRARY} PUBLIC "${MATH_INCLUDES}" )
+
+
+if(MAKE_TESTS)
+
+    set(RASTERIZER_INCLUDES math base gym)
+    list(TRANSFORM RASTERIZER_INCLUDES PREPEND "${PROJECT_SOURCE_DIR}/src/")
+
     add_library(rasterizerGL "${PROJECT_SOURCE_DIR}/src/math/rasterizer.cc")
     target_compile_definitions(rasterizerGL PRIVATE -DDISPLAY)
-    target_include_directories(rasterizerGL PUBLIC
-        "${MATH_SRC_DIR}"
-        "${BASE_SRC_DIR}"
-        "${DISP_SRC_DIR}"
-    )
+    target_include_directories(rasterizerGL PUBLIC "${RASTERIZER_INCLUDES}" )
 endif()

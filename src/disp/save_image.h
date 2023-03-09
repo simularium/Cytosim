@@ -20,10 +20,7 @@
 namespace SaveImage
 {
     /// error codes
-    enum { NO_ERROR=0, FAILED_ALLOCATION=1, UNKNOWN_FORMAT=2, OPENGL_ERROR=3, FILE_ERROR=4, PNG_ERROR=10 };
-
-    /// destination of error messages (set to zero to suppress output)
-    static FILE * err = stderr;
+    enum { NO_ERROR=0, FAILED_ALLOCATION=1, FAILED_READ=2, UNKNOWN_FORMAT=3, OPENGL_ERROR=4, FILE_ERROR=5, PNG_ERROR=10 };
     
     /// open a file for binary write
     FILE * openFile(const char * name);
@@ -55,7 +52,6 @@ namespace SaveImage
     int saveGrayPNG(FILE*, const uint16_t[], uint32_t width, uint32_t height);
     
     
-    
     /// save pixels[] and return error-code
     int savePixels(FILE*, const char format[], const uint8_t[], uint32_t width, uint32_t height);
     
@@ -66,7 +62,7 @@ namespace SaveImage
     int savePixels(const char* name, const char format[], const uint8_t[], uint32_t width, uint32_t height, int downsample);
     
     /// downsample `src` to set `dst`
-    void downsampleRGB(uint8_t* dst, uint8_t const* src, uint32_t W, uint32_t H, unsigned bin);
+    void downsampleRGB(uint8_t* dst, uint32_t W, uint32_t H, uint8_t const* src, unsigned bin);
 
     //-------------------- use the functions below: ---------------------
     
@@ -79,14 +75,20 @@ namespace SaveImage
 
     /// save entire viewport in a new file called 'name'. Returns error-code
     int readPixels(int32_t x, int32_t y, uint32_t width, uint32_t height, void * pixels);
+    
+    /// save entire viewport in a new file called 'name'. Returns error-code
+    int readDepthPixels(int32_t x, int32_t y, uint32_t width, uint32_t height, void * pixels);
 
     /// save entire viewport in a new file called 'name'. Returns error-code
     int saveEntireImage(const char* name, const char format[], int downsample=1);
 
     /// save a region of the current buffer in a new file called 'name'. Returns error-code
     int saveImage(const char* name, const char format[], const int viewport[], int downsample=1);
+    
+    /// save a region of the current depth buffer in a new PNG file called 'name'. Returns error-code
+    int saveDepthBuffer(const char* name, const int viewport[]);
 
-     /// save an image with higher resolution (better version)
+     /// save an image with higher resolution (this is better than saveCompositeImage)
     int saveMagnifiedImage(int mag, const char* name, const char format[], uint32_t width, uint32_t height, void (*display)(int, void *), void* arg, int downsample);
 
     /// save an image with higher resolution

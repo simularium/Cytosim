@@ -442,7 +442,7 @@ bool showPoint(int i)
 }
 
 
-void display(View&, int)
+void display(View&)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
@@ -539,6 +539,7 @@ int main(int argc, char* argv[])
     glApp::specialKeyFunc(processSpecialKey);
     glApp::createWindow(display);
     glApp::setScale(20);
+    gle::initialize();
 
     initMenus();
     RNG.seed();

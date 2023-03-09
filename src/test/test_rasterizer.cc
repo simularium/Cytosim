@@ -213,7 +213,7 @@ void processNormalKey(unsigned char c, int x=0, int y=0)
 //===================================================================
 
 
-void display(View&, int)
+void display(View&)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     

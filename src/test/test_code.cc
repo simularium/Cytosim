@@ -231,6 +231,8 @@ void add_rigidity3(const unsigned nbt, const real* X, const real rigid, real* Y)
 #endif
 }
 
+#ifdef __SSE3__
+
 void add_rigidity_SSE(const unsigned nbt, const real* X, const real rigid, real* Y)
 {
     vec2 R = set2(rigid);
@@ -289,6 +291,7 @@ void add_rigidity_SSO(const unsigned nbt, const real* X, const real rigid, real*
     store2(Y, add2(load2(Y), add2(df, of)));
     store2(Y+DIM, sub2(load2(Y+DIM), of));
 }
+#endif
 
 #ifdef __AVX__
 

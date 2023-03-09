@@ -1,12 +1,3 @@
-# This repo is a copy of Cytosim from https://gitlab.com/f-nedelec/cytosim
-
-Added are:
-- Dockerfile
-- docker.sh
-- .github/workflows/build.yml
-
-On release, these build Cytosim's sim and report executables, pack them into a docker image, and push that docker image to https://hub.docker.com/repository/docker/simularium/cytosim. This allows Cytosim to be easily used in a Vivarium process (https://github.com/vivarium-collective/vivarium-cytosim), which users can run without building Cytosim themselves.
-
 # Cytosim
 
 Cytosim is a cytoskeleton simulation suite designed to handle large systems of flexible filaments with associated proteins such as molecular motors. It is a versatile base that has been used to study actin and microtubule systems in 1D, 2D and 3D. It is built around a cross-platform C++ core engine running on UNIX, Mac OSX, GNU/Linux and within Cygwin on Windows. The code is modular and extensible, making Cytosim a convenient base that can be customized to meet particular tasks. Some of the most common tasks encountered during a simulation project are implemented in Python.

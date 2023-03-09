@@ -80,9 +80,10 @@ private:
     /// abscissa of the plus-end
     real         fnAbscissaP;
 
+#if FIBER_HAS_NORMAL
     /// vector orthogonal to backbone at the origin, used for display only
     mutable Vector3 fnNormal;
-
+#endif
 protected:
     
     /// time at birth

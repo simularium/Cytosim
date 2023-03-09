@@ -467,12 +467,12 @@ class Filter
 {
 public:
 
-    ObjectMark      mrk;
-    unsigned        st1;
-    unsigned        st2;
-    Space    const* ins;
-    Space    const* ous;
+    Space const* ins;
+    Space const* ous;
     Property const* prp;
+    ObjectMark mrk;
+    unsigned st1;
+    unsigned st2;
 
     /// initialize
     Filter()
@@ -490,23 +490,17 @@ public:
         prp = pp;
         
         std::string str;
-        if ( opt.set(str, "position") )
+        if ( opt.set(str, "position", 1) )
         {
-            Space const* spc = nullptr;
-            std::string spn;
-            if ( opt.set(spn, "position", 1) )
-                spc = sim.findSpace(spn);
-            else
-                spc = sim.spaces.master();
+            Space const* spc = sim.spaces.master();
+            spc = sim.findSpace(str);
             if ( !spc )
-                throw InvalidSyntax("unknown Space `"+spn+"'");
-            
+                throw InvalidSyntax("unknown Space `"+str+"'");
+            opt.set(str, "position");
             if ( str == "inside" )
                 ins = spc;
             else if ( str == "outside" )
                 ous = spc;
-            else
-                throw InvalidSyntax("unknown specification `"+str+"'");
         }
         
         opt.set(mrk, "mark");
@@ -537,7 +531,7 @@ public:
         if ( st2 != ~0U )
         {
             if ( obj->tag()==Single::TAG )
-                throw InvalidParameter("to select Single, 'state[1]' is irrelevant");
+                throw InvalidParameter("to select Single, `state2' is irrelevant");
             if ( obj->tag()==Couple::TAG && static_cast<Couple const*>(obj)->attached2() != st2 )
                 return false;
             if ( obj->tag()==Fiber::TAG && static_cast<Fiber const*>(obj)->dynamicStateM() != st2 )
@@ -597,6 +591,45 @@ void Interface::execute_delete(std::string const& name, Glossary& opt, unsigned 
         
         //std::clog << "simul:deleting " << objs.size() << " " << set->title() << '\n';
         simul.erase(objs);
+    }
+}
+
+
+/**
+ This moves objects to position `pos`
+ */
+void Interface::execute_move(std::string const& name, Glossary& opt, size_t cnt)
+{
+    Property * pp = simul.properties.find(name);
+    ObjectSet * set = nullptr;
+    if ( pp )
+        set = simul.findSet(pp->category());
+    else
+        set = simul.findSet(name);
+    if ( !set )
+        throw InvalidSyntax("could not determine the class of `"+name+"'");
+    
+    Filter filter;
+    filter.set(simul, pp, opt);
+    ObjectList objs = set->collect(pass_filter, &filter);
+    
+    // optionally limit the list to a random subset
+    if ( cnt < objs.size() )
+    {
+        objs.shuffle();
+        objs.truncate(cnt);
+    }
+    
+    Vector pos;
+    if ( opt.set(pos, "position") )
+    {
+        for ( Object * obj : objs )
+            obj->setPosition(pos);
+    }
+    else if ( opt.set(pos, "translation") )
+    {
+        for ( Object * obj : objs )
+            obj->translate(pos);
     }
 }
 

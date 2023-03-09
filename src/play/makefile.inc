@@ -1,6 +1,6 @@
 # Cytosim was created by Francois Nedelec. Copyright 2007-2017 EMBL.
 
-OBJ_PLAY := display_prop.o player_prop.o sim_thread.o  frame_reader.o\
+OBJ_PLAY := display_prop.o player_prop.o sim_thread.o frame_reader.o\
             display.o display1.o display2.o display3.o
 
 FILES_PLAYER := player.cc player.h player_disp.cc

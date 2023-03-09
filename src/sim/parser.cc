@@ -544,6 +544,53 @@ void Parser::parse_delete(std::istream& is)
 
 
 /**
+ Move object:
+ 
+     move [INTEGER] NAME ( POSITION )
+ 
+ or
+ 
+     move all CLASS ( POSITION )
+
+ NAME can be '*', and 'position' is a Vector.
+ */
+
+void Parser::parse_move(std::istream& is)
+{
+    std::streampos ipos = is.tellg();
+    unsigned cnt = ~0U;
+    Tokenizer::get_integer(is, cnt);
+    std::string name = Tokenizer::get_symbol(is);
+
+    if ( name == "all" )
+    {
+        name = Tokenizer::get_symbol(is);
+        if ( !simul.isCategory(name) )
+            throw InvalidSyntax("`"+name+"' is not a known class of object");
+    }
+    
+    Glossary opt;
+    // Syntax sugar: () specify only position
+    std::string blok = Tokenizer::get_block(is, '(');
+    
+    if ( blok.empty() )
+    {
+        blok = Tokenizer::get_block(is, '{');
+        opt.read(blok);
+    }
+    else {
+        opt.define("position", blok);
+    }
+
+    if ( do_run )
+    {
+        execute_move(name, opt, cnt);
+        check_warnings(opt, is, ipos);
+    }
+}
+
+
+/**
  Mark objects:
  
      mark [MULTIPLICITY] NAME
@@ -1084,6 +1131,8 @@ int Parser::evaluate_one(std::istream& is)
         parse_new(is);
     else if ( tok == "delete" )
         parse_delete(is);
+    else if ( tok == "move" )
+        parse_move(is);
     else if ( tok == "mark" )
         parse_mark(is);
     else if ( tok == "run" )

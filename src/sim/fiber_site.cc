@@ -160,7 +160,7 @@ void FiberSite::read(Inputter& in, Simul& sim)
             throw InvalidIO("unexpected class in FiberSite");
         }
 
-        update();
+        reinterpolate();
         checkAbscissa();
     }
 }

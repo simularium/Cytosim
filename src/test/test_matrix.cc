@@ -379,7 +379,7 @@ This compares the Scalar and SIMD implementations of one matrix
     mat.vecMulAdd(x, z);
     real res = checksum(size, z, x);
 
-    unsigned long long time = __rdtsc();
+    tic();
     for ( int n = 0; n < N_RUN; ++n )
     {
         mat.prepareForMultiply(1);
@@ -387,16 +387,16 @@ This compares the Scalar and SIMD implementations of one matrix
             mat.vecMulAdd_ALT(x, z);
     }
     double nop = N_MUL * N_RUN * mat.nbElements();
-    double t1 = ( __rdtsc() - time ) / nop;
+    double t1 = toc(nop);
 
-    time = __rdtsc();
+    tic();
     for ( int n = 0; n < N_RUN; ++n )
     {
         mat.prepareForMultiply(1);
         for ( int m = 0; m < N_MUL; ++m )
             mat.vecMulAdd(x, z);
     }
-    double t2 = ( __rdtsc() - time ) / nop;
+    double t2 = toc(nop);
     
     printf("%6i %18s ", size, mat.what().c_str());
     printf("set %8.1f mul %8.1f  alt %8.1f", ts, t1, t2);

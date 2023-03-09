@@ -75,7 +75,7 @@ void Hand::relocate(Fiber* f)
 #endif
     }
     f->addHand(this);
-    update();
+    reinterpolate();
 }
 
 
@@ -96,7 +96,7 @@ void Hand::relocate(Fiber* f, const real a)
         f->addHand(this);
     }
     fbAbs = a;
-    update();
+    reinterpolate();
 }
 
 
@@ -206,7 +206,7 @@ void Hand::locate(Fiber* f, real a)
     fbAbs   = a;
     fbFiber = f;
     f->addHand(this);
-    update();
+    reinterpolate();
     haMonitor->afterAttachment(this);
     nextDetach = RNG.exponential();
 }

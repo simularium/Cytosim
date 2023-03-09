@@ -135,10 +135,9 @@ void displayFaces()
 }
 
 
-void display(View&, int)
+void display(View&)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
     
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
@@ -202,7 +201,8 @@ int main(int argc, char* argv[])
     glApp::normalKeyFunc(processNormalKey);
     glApp::createWindow(display);
     glApp::setScale(3);
-  
+    gle::initialize();
+
     setPlatonic();
     glutMainLoop();
     return EXIT_SUCCESS;

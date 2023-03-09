@@ -4,7 +4,7 @@
 #
 # Copyright Francois J. Nedelec and  Serge Dmitrieff, 
 # EMBL 2010--2017, Cambridge University 2019--2022
-# This is PRECONFIG version 1.56, last modified on 12.05.2022
+# This is PRECONFIG version 1.57, last modified on 15.06.2022
 
 """
 # SYNOPSIS
@@ -226,9 +226,9 @@ except ImportError as e:
 
 #-------------------------------------------------------------------------------
 
-__VERSION__="1.56"
+__VERSION__="1.57"
 
-__DATE__ ="12.05.2022"
+__DATE__ ="15.06.2022"
 
 # code snippets are surrounded by double square brackets:
 CODE = '['
@@ -247,7 +247,7 @@ def cannonical_pattern(arg):
     c = arg.count('%')
     for n in range(c,1,-1):
         if arg.find('%'*n) > 0:
-            return arg.replace('%'*n, '%0'+str(n)+'i', 1);
+            return arg.replace('%'*n, '%0'+str(n)+'i', 1)
     return arg
 
 
@@ -384,7 +384,7 @@ class Preconfig:
         k = ''
         v = code
         res = re.match(r" *([a-zA-Z]\w*) *= *(.*)", code)
-        #print(" preconfig:try_assignment(%s): %s" % (code, res.groups()));
+        #print(" preconfig:try_assignment(%s): %s" % (code, res.groups()))
         if res and len(res.groups()) > 1:
             k = res.group(1)
             v = res.group(2).strip()
@@ -423,8 +423,8 @@ class Preconfig:
             output += pre
             if eof:
                 if blok:
-                    sys.stderr.write("Preconfig Error: unclosed bracketted block in:\n");
-                    sys.stderr.write("    "+blok.split('\n', 1)[0]+'\n');
+                    sys.stderr.write("Preconfig Error: unclosed bracketted block in:\n")
+                    sys.stderr.write("    "+blok.split('\n', 1)[0]+'\n')
                     sys.exit(2)
                 # having exhausted the input, we generate a file:
                 self.make_file(output)
@@ -536,7 +536,7 @@ class Preconfig:
                 self.report('', key, v)
                 #print("|%50s <-- %s\n" % (key, str(v)) )
                 self.expand(values, file, text)
-                file.seek(ipos);
+                file.seek(ipos)
             # restore all values on upward recursion
             values[key] = vals
         else:
@@ -574,6 +574,11 @@ class Preconfig:
         inputs = []
         values = {}
         path = ''
+        
+        # first argument may define the pattern:
+        if args[0].find('%') >= 0 and not os.path.isfile(args[0]):
+            self.pattern = cannonical_pattern(args[0])
+            args = args[1 :]
         
         # parse arguments:
         for arg in args:

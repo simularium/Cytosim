@@ -55,7 +55,9 @@ Chain::Chain()
     fnSegmentation = 0;
     fnAbscissaM    = 0;
     fnAbscissaP    = 0;
+#if FIBER_HAS_NORMAL
     fnNormal.set(0, 0, 1);
+#endif
     fnBirthTime    = 0;
     needUpdate     = false;
 }
@@ -230,11 +232,16 @@ void Chain::setEquilibrated(real len, real persistence_length)
  */
 Vector3 Chain::adjustedNormal(Vector3 const& d) const
 {
+#if FIBER_HAS_NORMAL
     if ( fnNormal.normSqr() < 0.8 || dot(fnNormal, d) > 0.5 )
         fnNormal = d.orthogonal(1.0);
     else
         fnNormal = d.orthogonal(fnNormal, 1.0);
     return fnNormal;
+#else
+    LOG_ONCE("WARNING: Cytosim was compiled without FIBER_HAS_NORMAL\n");
+    return d.orthogonal();
+#endif
 }
 
 
