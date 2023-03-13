@@ -1,8 +1,8 @@
-// Cytosim was created by Francois Nedelec. Copyright 2022 Cambridge University
+// Cytosim was created by Francois Nedelec. Copyright 2007-2017 EMBL.
 
 /*
  Francois Nedelec, Nov. 2003,  nedelec@embl.de
- To compile on macOS:
+ To compile on mac-osx:
  g++ test_opengl.cc -framework GLUT -framework openGL
  On Linux:
  g++ test_opengl.cc -L/usr/X11R6/lib -lglut -lGL -lGLU -lXt -lX11
@@ -31,60 +31,30 @@
 #define GL_DEPTH_CLAMP 0x864F
 #endif
 
-unsigned delay = 13;       //delay 13 == 75 Hz display
-float angle = 0;
-float delta = 0.2;
-float linewidth = 3.0;
-float pointSize = 16;
-float cubeSize = 0.25;
-
-int transparency = 0;
-
-// view range
-float range = 1.0;
-
-// window size:
-int winW = 800;
-int winH = 800;
-
-//------------------------------------------------------------------------------
-
-void printDepthRange(int X, int Y, int W, int H)
-{
-    size_t S = W * H;
-    float * pixels = new float[S];
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glReadPixels(X, Y, W, H, GL_DEPTH_COMPONENT, GL_FLOAT, pixels);
-    
-    if ( glGetError() == GL_NO_ERROR )
-    {
-        float i = 2, s = -1;
-        for ( size_t u = 0; u < S; ++u )
-        {
-            i = std::min(i, pixels[u]);
-            if ( pixels[u] < 1 ) s = std::max(s, pixels[u]);
-        }
-        printf("\rOpenGL depth buffer range [ %8.6f %8.6f ]", i, s);
-    }
-    delete[] pixels;
-}
+unsigned int delay          = 13;       //delay 13 == 75 Hz display
+float        angle          = 0;
+float        angle_inc      = 0.1;
+float        linewidth      = 3.0;
+float        range          = 2.0;
+int          transparency   = 0;
 
 //------------------------------------------------------------------------------
 void printCaps()
 {
     GLint fog, depth, blend, clamp;
-    glGetIntegerv(GL_BLEND, &blend);
-    glGetIntegerv(GL_FOG, &fog);
-    glGetIntegerv(GL_DEPTH_TEST, &depth);
+    glGetIntegerv(GL_BLEND,       &blend);
+    glGetIntegerv(GL_FOG,         &fog);
+    glGetIntegerv(GL_DEPTH_TEST,  &depth);
     glGetIntegerv(GL_DEPTH_CLAMP, &clamp);
     
     printf("transparency %i - blend %i - fog %i - depth %i - clamp %i",
            transparency, int(blend), int(fog), int(depth), int(clamp));
     
+    
     GLint point_smooth, line_smooth, multisample;
-    glGetIntegerv(GL_POINT_SMOOTH, &point_smooth);
-    glGetIntegerv(GL_LINE_SMOOTH, &line_smooth);
-    glGetIntegerv(GL_MULTISAMPLE, &multisample);
+    glGetIntegerv(GL_POINT_SMOOTH,   &point_smooth);
+    glGetIntegerv(GL_LINE_SMOOTH,    &line_smooth);
+    glGetIntegerv(GL_MULTISAMPLE,    &multisample);
 
     printf(" - point_smooth %i - line_smooth %i - multisample %i\n",
            int(point_smooth), int(line_smooth), int(multisample));
@@ -160,27 +130,25 @@ void processNormalKey(unsigned char c, int x, int y)
 
 
 //------------------------------------------------------------------------------
-void reshape(int w, int h)
+void reshape(int ww, int wh)
 {
-    glViewport(0, 0, w, h);
-    winW = w;
-    winH = h;
+    glViewport(0, 0, ww, wh);
+    
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    float ratio = w / float( h );
+    double ratio = ww / double( wh );
     
     if ( ratio > 1 )
-        glOrtho(-range, range, -range/ratio, range/ratio, range, range+4);
+        glOrtho(-range, range, -range/ratio, range/ratio, 1, 4);
     else
-        glOrtho(-range*ratio, range*ratio, -range, range, range, range+4);
+        glOrtho(-range*ratio, range*ratio, -range, range, 1, 4);
 }
 
 
 //------------------------------------------------------------------------------
 void initGL()
 {
-    glClearDepth(1);
-    glClearColor(0.f, 0.f, 0.f, 0.f);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
     
     glEnable(GL_BLEND);
@@ -193,9 +161,9 @@ void initGL()
     
     glEnable(GL_FOG);
     glFogi(GL_FOG_MODE, GL_LINEAR);
-    glFogf(GL_FOG_START, 0);
-    glFogf(GL_FOG_END,   4);
-    GLfloat rgba[] = { 0.f, 0.f, 0.f, 1.f };
+    glFogf(GL_FOG_START, 0 );
+    glFogf(GL_FOG_END,   4 );
+    GLfloat rgba[] = { 0.0, 0.0, 0.0, 1.0 };
     glFogfv(GL_FOG_COLOR, rgba);
 }
 
@@ -203,38 +171,29 @@ void setView(GLfloat angle)
 {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glTranslatef(0.f, 0.f, -range*2);
-    glRotatef(angle, 0.f, 0.f, 1.f);
-    glRotatef(angle, 1.f, 0.f, 0.f);
+    glTranslatef(0.0, 0.0, -range);
+    glRotatef(angle, 0.0, 0.0, 1.0);
+    glRotatef(angle, 1.0, 0.0, 0.0);
 }
 
 //------------------------------------------------------------------------------
 void display()
 {
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     
     setView(angle);
     glLineWidth(linewidth);
-    glColor3f(1.f, 1.f, 1.f);
+    glColor3f(1.0, 1.0, 1.0);
     glutWireCube(1.35);
     
-    glPointSize(pointSize);
+    glPointSize(32.0);
     glBegin(GL_POINTS);
-    glColor3f(1.f, 1.f, 1.f); glVertex3f(0.f, 0.f, 0.f);
-    glColor3f(1.f, 0.f, 0.f); glVertex3f(1.f, 0.f, 0.f);
-    glColor3f(0.f, 1.f, 0.f); glVertex3f(0.f, 1.f, 0.f);
-    glColor3f(0.f, 0.f, 1.f); glVertex3f(0.f, 0.f, 1.f);
+    glColor3f(1.0, 1.0, 1.0);   glVertex3f(0.0, 0.0, 0.0);
+    glColor3f(1.0, 0.0, 0.0);   glVertex3f(1.0, 0.0, 0.0);
+    glColor3f(0.0, 1.0, 0.0);   glVertex3f(0.0, 1.0, 0.0);
+    glColor3f(0.0, 0.0, 1.0);   glVertex3f(0.0, 0.0, 1.0);
     glEnd();
     
-    glColor3f(1.f, 0.4f, 0.4f); glTranslatef(-1,0,0);
-    glutSolidCube(cubeSize); glTranslatef(1,0,0);
-    
-    glColor3f(0.4f, 1.f, 0.4f); glTranslatef(0,-1,0);
-    glutSolidCube(cubeSize); glTranslatef(0,1,0);
-    
-    glColor3f(0.4f, 0.4f, 1.f); glTranslatef(0,0,-1);
-    glutSolidCube(cubeSize); glTranslatef(0,0,1);
-
     if ( transparency )
     {
         glColor4f(0.5, 0.5, 0.5, 0.35);
@@ -249,10 +208,10 @@ void display()
     }
     else
     {
-        glColor3f(.5f, .5f, .5f);
+        glColor3f(0.5, 0.5, 0.5);
         glutSolidSphere(1, 32, 32);
     }
-    printDepthRange(0, 0, winW, winH);
+    
     glutSwapBuffers();
     glutReportErrors();
 }
@@ -260,7 +219,7 @@ void display()
 //------------------------------------------------------------------------------
 void timerFunction(int win)
 {
-    angle += delta;
+    angle += angle_inc;
     glutPostWindowRedisplay(win);
     //register another timer call back in prop.delay milli-sec:
     glutTimerFunc(delay, timerFunction, win);
@@ -348,15 +307,15 @@ void printExtensions()
 int main(int argc, char* argv[])
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH);
-    glutInitWindowSize(winW, winH);
+    glutInitDisplayString("double rgba depth samples~8");
+    glutInitWindowSize(512, 512);
     glutCreateWindow(argv[0]);
     
     //testglut -e reports some OpenGL info:
     if ( argc > 1 )
     {
         if ( isdigit(argv[1][0]) )
-            sscanf(argv[1], "%f", &delta);
+            sscanf(argv[1], "%f", &angle_inc);
         else
         {
             if ( 0 == strncmp(argv[1], "cap", 3) )
@@ -376,4 +335,6 @@ int main(int argc, char* argv[])
     
     glutReportErrors();
     glutMainLoop();
+    
+    return EXIT_SUCCESS;
 }

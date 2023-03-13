@@ -539,7 +539,6 @@ int main(int argc, char* argv[])
     glApp::specialKeyFunc(processSpecialKey);
     glApp::createWindow(display);
     glApp::setScale(20);
-    gle::initialize();
 
     initMenus();
     RNG.seed();

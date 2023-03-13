@@ -377,6 +377,9 @@ public:
     /// normalized energy associated with bending
     real         bendingEnergy0() const;
 
+    /// bending energy per segment
+    std::vector<double> bendingEnergySegments() const;
+
     /// the cosine of the maximum segment angle: indicate the errors due to curvature
     real         minCosinus() const;
     

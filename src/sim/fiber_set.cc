@@ -789,38 +789,34 @@ real FiberSet::infoNematic(ObjectList const& objs,
         Fiber * fib = Fiber::toFiber(i);
         if ( fib )
         {
-            const real w = square(fib->segmentation());
+            const real w = fib->segmentation();
             for ( unsigned n = 0; n < fib->nbSegments(); ++n )
             {
                 Vector p = fib->dirSegment(n);
                 
-                M[0] += w * ( p.XX * p.XX );
+                M[0] += w * ( DIM * p.XX * p.XX - 1 );
 #if ( DIM > 1 )
-                M[1] += w * ( p.YY * p.XX );
-                M[4] += w * ( p.YY * p.YY );
+                M[1] += w * ( DIM * p.YY * p.XX );
+                M[4] += w * ( DIM * p.YY * p.YY - 1 );
 #endif
 #if ( DIM > 2 )
-                M[2] += w * ( p.ZZ * p.XX );
-                M[5] += w * ( p.ZZ * p.YY );
-                M[8] += w * ( p.ZZ * p.ZZ );
+                M[2] += w * ( DIM * p.ZZ * p.XX );
+                M[5] += w * ( DIM * p.ZZ * p.YY );
+                M[8] += w * ( DIM * p.ZZ * p.ZZ - 1 );
 #endif
             }
-            S += fib->nbSegments();
+            
+            S += w * fib->nbSegments();
         }
     }
     
+    
     if ( S == 0 )
         return 0;
-    // rescale matrix, to ensure eigenvalue = 1 in perfect order
-    real beta = ( DIM >= 3 ) ? 0.5 : 1.0;
-    S = beta * DIM / S;
+    // rescale matrix:
     for ( unsigned d = 0; d < 9; ++d )
-        M[d] = M[d] * S;
-    // subtract trace:
-    M[0] -= beta;
-    if ( DIM > 1 ) M[4] -= beta;
-    if ( DIM > 2 ) M[8] -= beta;
-
+        M[d] = M[d] / S;
+    
     int nv;
     real vec[9] = { 0 };
     real val[3] = { 0 };

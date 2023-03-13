@@ -10,6 +10,6 @@
  DIM defines the number of dimensions in space:
  it must be 1, 2 or 3
  */
-#define DIM 2
+#define DIM 3
 
 #endif

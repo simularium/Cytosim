@@ -1,19 +1,25 @@
-
-set(TEST_INCLUDES math base sim disp)
-list(TRANSFORM TEST_INCLUDES PREPEND "${PROJECT_SOURCE_DIR}/src/")
-
+set(TEST_INCLUDES
+    "${BASE_SRC_DIR}"
+    "${MATH_SRC_DIR}"
+    "${SIM_SRC_DIR}"
+    "${DISP_SRC_DIR}"
+)
 
 set(TEST_LIBS
-    "${LAPACK_BLAS}"
+    "${LAPACK_LIB}"
+    "${BLAS_LIB}"
     Threads::Threads
-    "${MATH_LIBRARY}"
-    "${BASE_LIBRARY}"
+    "${MATH_LIB_TARGET}"
+    "${BASE_LIB_TARGET}"
+    "${OPENGL_LIBS}"
 )
+
+set(TEST_SOURCE_DIR "${PROJECT_SOURCE_DIR}/src/test/")
 
 set(TEST_LIST
     #"test" # Test is a reserved word in CMake 3.10.x
     "test_blas"
-    "test_glossary"
+    "test_glos"
     "test_random"
     "test_quaternion"
     "test_simd"
@@ -24,26 +30,26 @@ set(TEST_LIST
     "test_string"
 )
 
-foreach(TEST ${TEST_LIST})
-    add_executable("${TEST}" "${PROJECT_SOURCE_DIR}/src/test/${TEST}.cc")
+foreach(TEST_NAME ${TEST_LIST})
+    add_executable("${TEST_NAME}" "${PROJECT_SOURCE_DIR}/src/test/${TEST_NAME}.cc")
     set_source_files_properties(
         PROPERTIES
         EXTERNAL_OBJECT true
         GENERATED true
     )
-    target_include_directories(${TEST} PUBLIC "${TEST_INCLUDES}")
-    target_link_libraries(${TEST} PUBLIC "${TEST_LIBS}")
+    target_include_directories(${TEST_NAME} PUBLIC "${TEST_INCLUDES}")
+    target_link_libraries(${TEST_NAME} PUBLIC "${TEST_LIBS}")
 endforeach()
-
-if(OPENGL_LIBS)
 
 set(TEST_GL_LIBS
     rasterizerGL
-    "${GYM_LIBRARY}"
-    "${SIMG_LIBRARY}"
-    "${MATH_LIBRARY}"
-    "${BASE_LIBRARY}"
-    "${LAPACK_BLAS}"
+    "${DISP_LIB_TARGET}"
+    "${SPACES_LIB_TARGET}"
+    "${SIM_LIB_TARGET}"
+    "${MATH_LIB_TARGET}"
+    "${BASE_LIB_TARGET}"
+    "${LAPACK_LIB}"
+    "${BLAS_LIB}"
     Threads::Threads
     "${OPENGL_LIBS}"
 )
@@ -59,10 +65,8 @@ set(GL_TEST_LIST
     "test_solve"
 )
 
-foreach(TEST ${GL_TEST_LIST})
-    add_executable(${TEST} "${PROJECT_SOURCE_DIR}/src/test/${TEST}.cc")
-    target_include_directories(${TEST} PUBLIC "${TEST_INCLUDES}")
-    target_link_libraries(${TEST} PUBLIC "${TEST_GL_LIBS}")
+foreach(TEST_NAME ${GL_TEST_LIST})
+    add_executable(${TEST_NAME} "${PROJECT_SOURCE_DIR}/src/test/${TEST_NAME}.cc")
+    target_include_directories(${TEST_NAME} PUBLIC "${TEST_INCLUDES}")
+    target_link_libraries(${TEST_NAME} PUBLIC "${TEST_GL_LIBS}")
 endforeach()
-
-endif()

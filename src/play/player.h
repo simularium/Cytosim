@@ -3,7 +3,7 @@
 #define PLAYER_H
 
 ///this turns on display code in simul.h
-#define  DISPLAY 1
+#define  DISPLAY
 
 #include "simul.h"
 #include "parser.h"
