@@ -390,10 +390,7 @@ public:
     
     /// print sum of all bending energy
     void      reportFiberBendingEnergy(std::ostream&) const;
-
-    /// print bending energy along segments
-    void      reportFiberSegmentEnergy(std::ostream&) const;  
-
+    
     /// print component of forces experienced by Fibers due to confinement
     void      reportFiberConfineForce(std::ostream& out) const;
 

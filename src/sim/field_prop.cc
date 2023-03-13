@@ -35,9 +35,9 @@ void FieldProp::clear()
 //------------------------------------------------------------------------------
 void FieldProp::read(Glossary& glos)
 {
-    Glossary::dict_type<int> keys({{"flux", 0}, {"edge", 7},
-                                   {"edgeX", 1}, {"edgeY", 2}, {"edgeZ", 4},
-                                   {"edgeXY", 3}, {"edgeYZ", 6}, {"edgeXZ", 5}});
+    Glossary::dict_type<int> keys{{"flux", 0}, {"edge", 7},
+                                  {"edgeX", 1}, {"edgeY", 2}, {"edgeZ", 4},
+                                  {"edgeXY", 3}, {"edgeYZ", 6}, {"edgeXZ", 5}};
     
     glos.set(step,               "step");
     glos.set(periodic,           "periodic");

@@ -32,10 +32,10 @@ int pointSize = 1;
 
 //------------- size of the display window:
 
-GLint windowSize[2] = { 800, 800 };
+int winW = 800;
+int winH = 800;
 
 GLfloat pixelSize = 1;
-
 
 //------------- delay for the Timer function in milli-seconds:
 
@@ -47,62 +47,37 @@ GLfloat zoom = 0.8;
 
 //------------- point of focus:
 
-GLfloat focus[] = { 0.0, 0.0 };
+GLfloat focus[] = { 0.f, 0.f };
 
 //------------- variables for the mouse driven zoom:
 
 int mouseAction;
 GLfloat zoomSave, zoomFactor;
-GLfloat focusSave[]   = { 0.0, 0.0 };
-GLfloat mouseClick[]  = { 0.0, 0.0, 0.0 };
-GLfloat unprojected[] = { 0.0, 0.0, 0.0 };
+GLfloat mouseDown[] = { 0.f, 0.f, 0.f };
+GLfloat pointer[] = { 0.f, 0.f, 0.f };
 
 //------------- function to set the OpenGL transformation:
 
 void setModelView()
 {
     glMatrixMode(GL_MODELVIEW);
-    
-    //set the matrix with a simple zoom:
     glLoadIdentity();
-    glScaled(zoom, zoom, zoom);
-    glTranslated(-focus[0], -focus[1], 0);
+    glScalef(zoom, zoom, zoom);
+    glTranslatef(-focus[0], -focus[1], 0);
 }
 
-
-void setOrtho(GLfloat mat[16],
-              GLfloat const& left,
-              GLfloat const& right,
-              GLfloat const& bottom,
-              GLfloat const& top,
-              GLfloat const& near,
-              GLfloat const& far)
+void unproject(const GLfloat X, const GLfloat Y, GLfloat res[2])
 {
-    for ( int d = 0; d < 16; ++d )
-        mat[d] = 0;
-    
-    mat[ 0] = 2.0 / ( right - left );
-    mat[ 5] = 2.0 / ( top - bottom );
-    mat[10] = 2.0 / ( near - far );
-
-    mat[12] = - (right + left) / (right - left);
-    mat[13] = - (top + bottom) / (top - bottom);
-    mat[14] = - (far + near) / (far - near);
-    
-    mat[15] = 1.0;
-}
-
-void unproject(const int wx, const int wy, GLfloat res[2])
-{
-    res[0] = ( wx - 0.5 * windowSize[0] ) * pixelSize + focus[0];
-    res[1] = ( 0.5 * windowSize[1] - wy ) * pixelSize + focus[1];
+    res[0] = ( X - 0.5f * winW ) * pixelSize + focus[0];
+    res[1] = ( 0.5f * winH - Y ) * pixelSize + focus[1];
+    //printf("unproject (%+9.3f %+9.3f) --> (%+9.3f %+9.3f)\n", X, Y, res[0], res[2]);
 }
 
 void windowReshaped(int w, int h)
 {
     glViewport(0, 0, w, h);
-    windowSize[0] = w;
-    windowSize[1] = h;
+    winW = w;
+    winH = h;
         
     // --- set-up the projection matrix:
     glMatrixMode(GL_PROJECTION);
@@ -110,34 +85,23 @@ void windowReshaped(int w, int h)
     
     if ( w > h )
     {
-        pixelSize = 2.0 / ( zoom * windowSize[0] );
+        pixelSize = 2.0f / ( zoom * winW );
         GLfloat ratio = h / GLfloat(w);
-#if 0
         glOrtho(-1.0, 1.0, -ratio, ratio, 0, 1 );
-#else
-        GLfloat mat[16];
-        setOrtho(mat, -1.0, 1.0, -ratio, ratio, 0.0, 1.0);
-        glLoadMatrixf(mat);
-#endif
     }
     else
     {
-        pixelSize = 2.0 / ( zoom * windowSize[1] );
+        pixelSize = 2.0f / ( zoom * winH );
         GLfloat ratio = w / GLfloat(h);
-#if 0
         glOrtho(-ratio, ratio, -1.0, 1.0, 0, 1 );
-#else
-        GLfloat mat[16];
-        setOrtho(mat, -1.0, 1.0, -ratio, ratio, 0.0, 1.0);
-        glLoadMatrixf(mat);
-#endif
     }
 }
 
 //----------------------------- KEYS --------------------------------
 
-void processNormalKey(unsigned char c, int, int)
+void processNormalKey(unsigned char c, int x, int y)
 {
+    printf("key %i mouse (%i %i)\n", c, x, y);
     switch (c)
     {
         case 27:
@@ -149,7 +113,7 @@ void processNormalKey(unsigned char c, int, int)
             break;   //we use break to call the setModelView() below
             
         default:
-            printf("hit key `%c' (ascii %i) with modifier %i\n", c, c, glutGetModifiers());
+            printf("key %i with modifier %i\n", c, glutGetModifiers());
     }
     setModelView();
     glutPostRedisplay();
@@ -159,7 +123,7 @@ void processNormalKey(unsigned char c, int, int)
 // handle special keys: arrows, ctrl, etc.
 void processInputKey(int c, int, int)
 {
-    printf("unknown special key %c\n", c);
+    printf("special key %c\n", c);
 }
 
 
@@ -200,6 +164,22 @@ enum { MOUSE_PASSIVE, MOUSE_ZOOM, MOUSE_MOVE, MOUSE_CLICK };
 //this is called when the mouse button is pressed or released:
 void processMouse(int button, int state, int x, int y)
 {
+#if 0
+    static int mx, my;
+    if ( state == GLUT_DOWN )
+    {
+        mx = x;
+        my = y;
+        printf("  mouse %i %i (%4i %4i) ", button, state, x, y);
+    }
+    else
+    {
+        if ( mx == x && my == y )
+            printf("  ---- %i %i\n", button, state);
+        else
+            printf("  ---- %i %i (%4i %4i)\n", button, state, x, y);
+    }
+#endif
     // for a button release event, do nothing:
     if ( state != GLUT_DOWN ) return;
     
@@ -219,30 +199,29 @@ void processMouse(int button, int state, int x, int y)
             mouseAction = MOUSE_ZOOM;
             break;
     }
+    //printf("button %i (%4i %4i) action %i\n", button, x, y, mouseAction);
 
     // perform action...
     switch( mouseAction )
     {
         case MOUSE_MOVE:
         {
-            unproject(x, y, unprojected);
-            focusSave[0] = focus[0];
-            focusSave[1] = focus[1];
+            unproject(x, y, mouseDown);
         } break;
             
         case MOUSE_ZOOM:
         {
-            GLfloat xx = x - 0.5*windowSize[0];
-            GLfloat yy = y - 0.5*windowSize[1];
-            zoomFactor = sqrt( xx*xx + yy*yy );
+            GLfloat xx = x - 0.5*winW;
+            GLfloat yy = y - 0.5*winH;
+            zoomFactor = std::sqrt( xx*xx + yy*yy );
             if ( zoomFactor > 0 )
-                zoomFactor = 1.0 / zoomFactor;
+                zoomFactor = 1 / zoomFactor;
             zoomSave = zoom;
         } break;
             
         case MOUSE_CLICK:
         {
-            unproject(x, y, mouseClick);
+            unproject(x, y, pointer);
         } break;
             
         case MOUSE_PASSIVE:
@@ -253,29 +232,31 @@ void processMouse(int button, int state, int x, int y)
 
 void processMotion(int x, int y)
 {
+    //printf("mouse (%4i %4i)\n", x, y);
     switch( mouseAction )
     {
         case MOUSE_MOVE:
         {
-            GLfloat up[3];
-            unproject(x,y, up);
-            focus[0] = focusSave[0] + unprojected[0] - up[0];
-            focus[1] = focusSave[1] + unprojected[1] - up[1];
+            GLfloat up[2];
+            unproject(x, y, up);
+            focus[0] += mouseDown[0] - up[0];
+            focus[1] += mouseDown[1] - up[1];
+            //printf("focus (%+9.4f %+9.4f) ", focus[0], focus[1]);
         } break;
             
         case MOUSE_ZOOM:
         {
             // --- we set the zoom from how far the mouse is from the window center
-            GLfloat xx = x - 0.5*windowSize[0];
-            GLfloat yy = y - 0.5*windowSize[1];
-            GLfloat Z = zoomFactor * sqrt( xx*xx + yy*yy );
+            GLfloat X = x - 0.5*winW;
+            GLfloat Y = y - 0.5*winH;
+            GLfloat Z = zoomFactor * std::sqrt(X*X+Y*Y);
             if ( Z <= 0 ) return;
             zoom = zoomSave * Z;
         } break;
         
         case MOUSE_CLICK:
         {
-            unproject(x,y, mouseClick);
+            unproject(x,y, pointer);
         } break;
                         
         case MOUSE_PASSIVE:
@@ -285,56 +266,11 @@ void processMotion(int x, int y)
     glutPostRedisplay();
 }
 
-//----------------------------- DISPLAY --------------------------------
-
-void display()
-{
-    // --- clear window to the current clearing color:
-    glClear( GL_COLOR_BUFFER_BIT );
-    
-    // --- set line width to 1 and color to white:
-    glColor3f(1.0, 1.0, 1.0);
-    glLineWidth(1.0);
-    
-    // Display of the simulation state:
-    // --- draw a wireframe triangle:
-    glBegin(GL_LINE_LOOP);
-    glVertex2f( 1.0, -1.0);
-    glVertex2f(-1.0, -1.0);
-    glVertex2f( 0.0,  1.0);
-    glEnd();
-    
-    // --- a point of variable size at the last mouse click:
-    glColor3f(1.0, 1.0, 0.0);
-    glPointSize(pointSize);
-    glBegin(GL_POINTS);
-    glVertex2d(mouseClick[0], mouseClick[1]);
-    glEnd();
-    
-    // OpenGL cleanup:
-    glutSwapBuffers();
-    // --- check for OpenGL errors:
-    glutReportErrors();
-}
-
-//------------------------- TIMER FUNCTION -----------------------------
-void timerFunction(int value)
-{
-    //This is a very basic simulation!
-    pointSize = 1 + ( pointSize + 1 ) % 16;
-    
-    
-    glutPostRedisplay();
-    //register another automatic timer call back (timerDelay is in milli-sec):
-    glutTimerFunc(timerDelay, timerFunction, 1);
-}
-
-
 //----------------------------- INIT GL --------------------------------
 void initGL()
 {
     // --- choose the clearing color: black
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(0.f, 0.f, 0.f, 0.f);
     
     //--- hints for OpenGL rendering:
     glEnable(GL_BLEND);
@@ -350,15 +286,58 @@ void initGL()
     setModelView();
 }
 
+//----------------------------- DISPLAY --------------------------------
+
+void display()
+{
+    // --- clear window to the current clearing color:
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    // --- set line width to 1 and color to white:
+    glColor3f(1.f, 1.f, 1.f);
+    glLineWidth(1);
+    
+    // Display of the simulation state:
+    // --- draw a wireframe triangle:
+    glBegin(GL_LINE_LOOP);
+    glVertex2f( 1.f, -1.f);
+    glVertex2f(-1.f, -1.f);
+    glVertex2f( 0.f,  1.f);
+    glEnd();
+    
+    // --- a point of variable size at the last mouse click:
+    glColor3f(1.f, 1.f, 0.f);
+    glPointSize(pointSize);
+    glBegin(GL_POINTS);
+    glVertex2d(pointer[0], pointer[1]);
+    glEnd();
+    
+    glFinish();
+    // OpenGL cleanup:
+    glutSwapBuffers();
+    // --- check for OpenGL errors:
+    glutReportErrors();
+}
+
+//------------------------- TIMER FUNCTION -----------------------------
+void timerFunction(int value)
+{
+    //This is a very basic simulation!
+    pointSize = 1 + ( pointSize + 1 ) % 16;
+    
+    glutPostRedisplay();
+    //register another automatic timer call back (timerDelay is in milli-sec):
+    glutTimerFunc(timerDelay, timerFunction, 1);
+}
+
 
 //-----------------------------   MAIN  --------------------------------
 int main(int argc, char* argv[])
 {
-    
     // --- initialization of GLUT:
     glutInit(&argc, argv);
     glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );
-    glutInitWindowSize(windowSize[0], windowSize[1]);
+    glutInitWindowSize(winW, winH);
     glutInitWindowPosition(50, 50);
     glutCreateWindow(argv[0]);
     
@@ -376,6 +355,4 @@ int main(int argc, char* argv[])
     
     // --- starts the event loop, which will never return:
     glutMainLoop();
-    
-    return EXIT_SUCCESS;
 }

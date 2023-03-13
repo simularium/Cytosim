@@ -134,10 +134,10 @@ void ViewProp::read(Glossary& glos)
         glos.set(clip_plane_scalar[k], var, 2);
     }
     
-    Glossary::dict_type<GLint> keys({{"off",          0},
-                                     {"linear",       1},
-                                     {"exponential",  2},
-                                     {"exponential2", 3}});
+    Glossary::dict_type<GLint> keys{{"off",          0},
+                                    {"linear",       1},
+                                    {"exponential",  2},
+                                    {"exponential2", 3}};
 
     glos.set(fog_type,     "fog_type", keys);
     glos.set(fog_param,    "fog_param");

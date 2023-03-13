@@ -47,18 +47,18 @@ mz_ulong mz_adler32(mz_ulong adler, const unsigned char *ptr, size_t buf_len)
     {
         for (i = 0; i + 7 < block_len; i += 8, ptr += 8)
         {
-            s1 += ptr[0], s2 += s1;
-            s1 += ptr[1], s2 += s1;
-            s1 += ptr[2], s2 += s1;
-            s1 += ptr[3], s2 += s1;
-            s1 += ptr[4], s2 += s1;
-            s1 += ptr[5], s2 += s1;
-            s1 += ptr[6], s2 += s1;
-            s1 += ptr[7], s2 += s1;
+            s1 += ptr[0]; s2 += s1;
+            s1 += ptr[1]; s2 += s1;
+            s1 += ptr[2]; s2 += s1;
+            s1 += ptr[3]; s2 += s1;
+            s1 += ptr[4]; s2 += s1;
+            s1 += ptr[5]; s2 += s1;
+            s1 += ptr[6]; s2 += s1;
+            s1 += ptr[7]; s2 += s1;
         }
         for (; i < block_len; ++i)
-            s1 += *ptr++, s2 += s1;
-        s1 %= 65521U, s2 %= 65521U;
+        { s1 += *ptr++; s2 += s1; }
+        s1 %= 65521U; s2 %= 65521U;
         buf_len -= block_len;
         block_len = 5552;
     }
@@ -1113,7 +1113,9 @@ static mz_bool tdefl_compress_lz_codes(tdefl_compressor *d)
         if (flags & 1)
         {
             mz_uint s0, s1, n0, n1, sym, num_extra_bits;
-            mz_uint match_len = pLZ_codes[0], match_dist = *(const mz_uint16 *)(pLZ_codes + 1);
+            mz_uint match_len = pLZ_codes[0];
+            //mz_uint match_dist = *(const mz_uint16 *)(pLZ_codes + 1);
+            mz_uint match_dist = 256 * (mz_uint)pLZ_codes[2] + (mz_uint)pLZ_codes[1];
             pLZ_codes += 3;
 
             MZ_ASSERT(d->m_huff_code_sizes[0][s_tdefl_len_sym[match_len]]);
@@ -1158,7 +1160,9 @@ static mz_bool tdefl_compress_lz_codes(tdefl_compressor *d)
         if (pOutput_buf >= d->m_pOutput_buf_end)
             return MZ_FALSE;
 
-        *(mz_uint64 *)pOutput_buf = bit_buffer;
+        //*(mz_uint64 *)pOutput_buf = bit_buffer;
+        memcpy(pOutput_buf, &bit_buffer, 8);
+        
         pOutput_buf += (bits_in >> 3);
         bit_buffer >>= (bits_in & ~7);
         bits_in &= 7;
@@ -1279,7 +1283,7 @@ static int tdefl_flush_block(tdefl_compressor *d, int flush)
     {
         mz_uint i;
         d->m_pOutput_buf = pSaved_output_buf;
-        d->m_bit_buffer = saved_bit_buf, d->m_bits_in = saved_bits_in;
+        d->m_bit_buffer = saved_bit_buf; d->m_bits_in = saved_bits_in;
         TDEFL_PUT_BITS(0, 2);
         if (d->m_bits_in)
         {
@@ -1298,7 +1302,7 @@ static int tdefl_flush_block(tdefl_compressor *d, int flush)
     else if (!comp_block_succeeded)
     {
         d->m_pOutput_buf = pSaved_output_buf;
-        d->m_bit_buffer = saved_bit_buf, d->m_bits_in = saved_bits_in;
+        d->m_bit_buffer = saved_bit_buf; d->m_bits_in = saved_bits_in;
         tdefl_compress_block(d, MZ_TRUE);
     }
 
@@ -2529,7 +2533,7 @@ tinfl_status tinfl_decompress(tinfl_decompressor *r, const mz_uint8 *pIn_buf_nex
                 MZ_CLEAR_OBJ(pTable->m_tree);
                 for (i = 0; i < r->m_table_sizes[r->m_type]; ++i)
                     total_syms[pTable->m_code_size[i]]++;
-                used_syms = 0, total = 0;
+                used_syms = 0; total = 0;
                 next_code[0] = next_code[1] = 0;
                 for (i = 1; i <= 15; ++i)
                 {
@@ -2838,18 +2842,18 @@ common_exit:
         {
             for (i = 0; i + 7 < block_len; i += 8, ptr += 8)
             {
-                s1 += ptr[0], s2 += s1;
-                s1 += ptr[1], s2 += s1;
-                s1 += ptr[2], s2 += s1;
-                s1 += ptr[3], s2 += s1;
-                s1 += ptr[4], s2 += s1;
-                s1 += ptr[5], s2 += s1;
-                s1 += ptr[6], s2 += s1;
-                s1 += ptr[7], s2 += s1;
+                s1 += ptr[0]; s2 += s1;
+                s1 += ptr[1]; s2 += s1;
+                s1 += ptr[2]; s2 += s1;
+                s1 += ptr[3]; s2 += s1;
+                s1 += ptr[4]; s2 += s1;
+                s1 += ptr[5]; s2 += s1;
+                s1 += ptr[6]; s2 += s1;
+                s1 += ptr[7]; s2 += s1;
             }
             for (; i < block_len; ++i)
-                s1 += *ptr++, s2 += s1;
-            s1 %= 65521U, s2 %= 65521U;
+            { s1 += *ptr++; s2 += s1; }
+            s1 %= 65521U; s2 %= 65521U;
             buf_len -= block_len;
             block_len = 5552;
         }

@@ -371,7 +371,7 @@ bool SpacePolygon::draw() const
 #endif
 #if ( 0 )
     // indicate index of each point:
-    char tmp[8];
+    char tmp[32];
     for ( unsigned n=0; n < npts; ++n )
     {
         snprintf(tmp, sizeof(tmp), "%i", n);

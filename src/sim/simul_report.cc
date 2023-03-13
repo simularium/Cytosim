@@ -72,16 +72,13 @@ void remove_plural(std::string & str)
  */
 void Simul::report(std::ostream& out, std::string arg, Glossary& opt) const
 {
-    // int p = 4;
-    int p = 18;
+    int p = 4;
     opt.set(p, "precision");
     out.precision(p);
     opt.set(column_width, "column") || opt.set(column_width, "width");
 
     //out << "\n% start   " << prop->time; // historical
     out << "\n% time " << std::fixed << prop->time;
-    // out << "\n% time " << std::setprecision(10) << prop->time;
-    // out << "\n% time " << std::scientific << prop->time;
     out << "\n% report " << arg;
     try {
         std::string::size_type pos = arg.find(',');
@@ -217,8 +214,6 @@ void Simul::report0(std::ostream& out, std::string const& arg, Glossary& opt) co
             return reportFiberLengthDistribution(out, opt);
         if ( what == "tension" )
             return reportFiberTension(out, opt);
-        if ( what == "segment_energy" )
-            return reportFiberSegmentEnergy(out);
         if ( what == "energy" )
             return reportFiberBendingEnergy(out);
         if ( what == "dynamic" )
@@ -1015,35 +1010,6 @@ void Simul::reportFiberTension(std::ostream& out, Glossary& opt) const
 }
 
 
-void Simul::reportFiberSegmentEnergy(std::ostream& out) const
-{
-    computeForces();
-
-    out << COM << "identity" << SEP << repeatXYZ("pos") << SEP << repeatXYZ("force") << SEP << "energy";
-    
-    // list fibers in the order of the inventory:
-    for ( Fiber const* fib = fibers.firstID(); fib; fib = fibers.nextID(fib) )
-    {
-        out << COM << "fiber " << fib->reference();
-        std::vector<double> energy_segments = fib->bendingEnergySegments();
-        for ( unsigned p = 0; p < fib->nbPoints(); ++p )
-        {
-            out << LIN << fib->identity();
-            out << SEP << fib->posP(p);
-            out << SEP << fib->netForce(p);
-            if ( p == fib->lastPoint() || p==0)
-                out << SEP << 0.0;
-
-            else
-                // out << SEP << fib->tension(p);
-                out << std::setprecision(10) << SEP << energy_segments[p-1];
-                
-
-        }
-        
-    }
-}
-
 /**
  Export fiber elastic bending energy
  */
@@ -1070,7 +1036,6 @@ void Simul::reportFiberBendingEnergy(std::ostream& out) const
     }
 }
 
-// Chain::bendingEnergySegments()
 
 /**
  Export total magnitude of force exerted by Fiber on the confinement
@@ -1214,7 +1179,7 @@ void Simul::reportFiberIntersections(std::ostream& out, Glossary& opt) const
 
 void Simul::reportTime(std::ostream& out) const
 {
-    out << LIN << std::scientific << prop->time;
+    out << LIN << prop->time;
 }
 
 

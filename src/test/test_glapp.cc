@@ -75,6 +75,7 @@ int main(int argc, char* argv[])
     glApp::attachMenu(GLUT_RIGHT_BUTTON);
     glApp::createWindow(display);
     glApp::setScale(4);
+    gle::initialize();
 
     glutMainLoop();
     return EXIT_SUCCESS;

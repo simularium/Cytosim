@@ -1039,7 +1039,6 @@ real Chain::curvature(unsigned p) const
 real Chain::bendingEnergy0() const
 {
     real e = 0;
-    std::vector<double> e_length;
     
     const unsigned lsp = nPoints - 2;
     if ( lsp > 0 )
@@ -1049,11 +1048,7 @@ real Chain::bendingEnergy0() const
             Vector A = posP(p);
             Vector B = posP(p+1);
             Vector C = posP(p+2);
-            double e_seg = dot(B - A, C - B);
-            e += e_seg;  // e += cos(angle) * segmentation^2
-            // make a segmented bending energy metric
-            e_length.push_back(e_seg);
-            // e_sub
+            e += dot(B - A, C - B);  // e += cos(angle) * segmentation^2
         }
         // e <- sum( 1 - cos(angle) )
         e = lsp - e / ( fnCut * fnCut );
@@ -1068,34 +1063,6 @@ real Chain::bendingEnergy0() const
     return e;
 }
 
-
-std::vector<double> Chain::bendingEnergySegments() const
-{
-    real e = 0;
-    real e_seg_energy = 0;
-    std::vector<double> e_length;
-    
-    const unsigned lsp = nPoints - 2;
-    if ( lsp > 0 )
-    {
-        for ( unsigned p = 0; p < lsp ; ++p )
-        {
-            Vector A = posP(p);
-            Vector B = posP(p+1);
-            Vector C = posP(p+2);
-            double e_seg = dot(B - A, C - B);
-            // make a segmented bending energy metric
-            // print
-            // e <- ( 1 - cos(angle) )
-            e_seg_energy = 1 - e_seg / ( fnCut * fnCut );
-            // std::cout << std::scientificprecision   
-            // std::cout << std::setprecision(10) << "bending energy segment" << e_seg << std::endl;
-            e_length.push_back(e_seg_energy);
-        }
-    }
-    std::cout << std::setprecision(10);
-    return e_length;
-}
 
 real Chain::minCosinus() const
 {

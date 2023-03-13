@@ -6,7 +6,15 @@
 extern "C" {
 #endif
 
+#if (defined(_WIN32) || defined(__CYGWIN__)) && !defined(SPNG_STATIC)
+    #if defined(SPNG__BUILD)
+        #define SPNG_API __declspec(dllexport)
+    #else
+        #define SPNG_API __declspec(dllimport)
+    #endif
+#else
     #define SPNG_API
+#endif
 
 #if defined(_MSC_VER)
     #define SPNG_CDECL __cdecl
@@ -169,8 +177,8 @@ enum spng_format
     SPNG_FMT_G8 = 64,
 
     /* No conversion or scaling */
-    SPNG_FMT_PNG = 256, /* host-endian */
-    SPNG_FMT_RAW = 512  /* big-endian */
+    SPNG_FMT_PNG = 256,
+    SPNG_FMT_RAW = 512  /* big-endian (everything else is host-endian) */
 };
 
 enum spng_ctx_flags
