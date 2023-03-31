@@ -18,4 +18,4 @@ COPY docker.sh /docker.sh
 RUN chmod +x /docker.sh
 
 # Run sim and report
-ENTRYPOINT /docker.sh
+ENTRYPOINT ./docker.sh
