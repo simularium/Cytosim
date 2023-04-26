@@ -1,5 +1,6 @@
 
 #!/bin/bash
+
 case ${SIMULATION_TYPE} in
 	AWS)
 		INPUT_FILE_PATH="${S3_INPUT_URL}${SIMULATION_NAME}/config/"
@@ -15,12 +16,11 @@ case ${SIMULATION_TYPE} in
 	;;
 esac
 
-cp ../bin/sim .
-cp ../bin/report .
+cp bin/sim .
+cp bin/report .
 ./sim config.cym
 ./report fiber:energy>fiber_energy.txt verbose=0
 ./report fiber:energy>fiber_energy_labels.txt
-./report fiber:segment_energy>fiber_segment_curvature.txt
 
 # Save output files
 case ${SIMULATION_TYPE} in
@@ -29,7 +29,10 @@ case ${SIMULATION_TYPE} in
 		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "*.txt"
 	;;
 	LOCAL)
+        mkdir -p $OUTPUT_FILE_PATH
 		cp *.cmo $OUTPUT_FILE_PATH
 		cp *.txt $OUTPUT_FILE_PATH
 	;;
 esac
+
+#docker run --rm -e SIMULATION_NAME='varycompressrate' -e JOB_ARRAY_INDEX=0 -e SIMULATION_TYPE='LOCAL' -v /Users/karthik.vegesna/simularium-cytosim/Cytosim/:/mnt/ cytosim-arm:0.0.0 
