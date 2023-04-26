@@ -10,6 +10,7 @@ bin3
 *.cmo
 *.cym
 
+
 # OSX stuff
 **/.DS_Store
 *.xcworkspace
@@ -70,3 +71,6 @@ _deps
 ### CMake Patch ###
 # External projects
 *-prefix/
+
+#txt files
+*.txt
