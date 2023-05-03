@@ -22,7 +22,7 @@ cp bin/sim .
 cp bin/report .
 
 # Run sim and report fiber energy 
-./sim config.cym
+./sim + config.cym 
 ./report fiber:energy>fiber_energy.txt verbose=0
 ./report fiber:energy>fiber_energy_labels.txt
 
