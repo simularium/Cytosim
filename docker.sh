@@ -29,8 +29,8 @@ cp bin/report .
 # Save output files
 case ${SIMULATION_TYPE} in
 	AWS)
-		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "*.cmo"
-		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "*.txt"
+		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "*.cmo" --exclude ".venv/" --exclude "src/"
+		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "*.txt" --exclude ".venv/" --exclude "src/"
 	;;
 	LOCAL)
         mkdir -p $OUTPUT_FILE_PATH
