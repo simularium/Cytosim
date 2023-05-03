@@ -9,10 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build Cytosim sim
-        run: make sim
-      - name: Build Cytosim report
-        run: make report
       - name: Login to DockerHub Registry
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u simularium --password-stdin
       - name: Get the release tag
