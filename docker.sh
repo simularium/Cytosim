@@ -26,11 +26,11 @@ cp bin/report .
 ./report fiber:energy>fiber_energy.txt verbose=0
 ./report fiber:energy>fiber_energy_labels.txt
 
-# Save output files
+# Save output filess
 case ${SIMULATION_TYPE} in
 	AWS)
-		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "*.cmo" --exclude ".venv/" --exclude "src/"
-		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "*.txt" --exclude ".venv/" --exclude "src/"
+		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --exclude ".venv/" --exclude "src/" --include "*.cmo" 
+		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --exclude ".venv/" --exclude "src/" --include "*.txt" 
 	;;
 	LOCAL)
         mkdir -p $OUTPUT_FILE_PATH
