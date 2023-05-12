@@ -5,13 +5,9 @@
 case ${SIMULATION_TYPE} in
 	AWS)
 		INPUT_FILE_PATH="${S3_INPUT_URL}${SIMULATION_NAME}/config/"
-		echo "$INPUT_FILE_PATH"
 		OUTPUT_FILE_PATH="${S3_INPUT_URL}${SIMULATION_NAME}/outputs/${AWS_BATCH_JOB_ARRAY_INDEX:-0}/"
-		echo "$OUTPUT_FILE_PATH"
  		INPUT_FILE_NAME="${SIMULATION_NAME}${AWS_BATCH_JOB_ARRAY_INDEX:-0}.cym" 
-		echo "$INPUT_FILE_NAME"
  		aws s3 cp $INPUT_FILE_PATH$INPUT_FILE_NAME config.cym
-		echo "s$INPUT_FILE_PATH$INPUT_FILE_NAME"
 	;;
 	LOCAL)
 		INPUT_FILE_PATH="/mnt/${SIMULATION_NAME}/config/"
@@ -33,8 +29,11 @@ cp bin/report .
 # Save output filess
 case ${SIMULATION_TYPE} in
 	AWS)
-		aws s3 cp . $OUTPUT_FILE_PATH --recursive --include "*.cmo" --exclude "*"
-		aws s3 cp . $OUTPUT_FILE_PATH --recursive --include "fiber_energy.txt" --include "fiber_energy_labels.txt" --exclude "*"
+		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "objects.cmo" 
+		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "messages.cmo" 
+		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "properties.cmo" 
+		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "fiber_energy.txt" 
+		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "fiber_energy_labels.txt" 
 	;;
 	LOCAL)
         mkdir -p $OUTPUT_FILE_PATH
