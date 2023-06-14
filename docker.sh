@@ -12,7 +12,7 @@ case ${SIMULATION_TYPE} in
 	LOCAL)
 		INPUT_FILE_PATH="/mnt/${SIMULATION_NAME}/config/"
 		OUTPUT_FILE_PATH="/mnt/${SIMULATION_NAME}/outputs/${JOB_ARRAY_INDEX}/"
- 		INPUT_FILE_NAME="${SIMULATION_NAME}_${JOB_ARRAY_INDEX}.cym" 
+ 		INgitPUT_FILE_NAME="${SIMULATION_NAME}_${JOB_ARRAY_INDEX}.cym" 
  		cp $INPUT_FILE_PATH$INPUT_FILE_NAME config.cym
 	;;
 esac
@@ -35,6 +35,7 @@ case ${SIMULATION_TYPE} in
 		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "properties.cmo" 
 		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "fiber_energy.txt" 
 		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "fiber_energy_labels.txt" 
+		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "fiber_segment_curvature.txt" 
 	;;
 	LOCAL)
         mkdir -p $OUTPUT_FILE_PATH
