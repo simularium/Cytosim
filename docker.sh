@@ -26,8 +26,8 @@ cp bin/report .
 ./report fiber:energy>fiber_energy.txt verbose=0
 ./report fiber:energy>fiber_energy_labels.txt
 ./report fiber:segment_energy>fiber_segment_curvature.txt
-./report fiber:points fiber_points.txt
-./report single:position singles.txt
+./report fiber:points> fiber_points.txt
+./report single:position> singles.txt
 
 # Save output filess
 case ${SIMULATION_TYPE} in
