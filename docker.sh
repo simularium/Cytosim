@@ -38,6 +38,8 @@ case ${SIMULATION_TYPE} in
 		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "fiber_energy.txt" 
 		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "fiber_energy_labels.txt" 
 		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "fiber_segment_curvature.txt" 
+		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "fiber_points.txt" 
+		aws s3 cp . $OUTPUT_FILE_PATH --recursive --exclude "*" --include "singles.txt" 
 	;;
 	LOCAL)
         mkdir -p $OUTPUT_FILE_PATH
