@@ -17,6 +17,10 @@ case ${SIMULATION_TYPE} in
 	;;
 esac
 
+echo $INPUT_FILE_PATH
+echo $OUTPUT_FILE_PATH
+echo $INPUT_FILE_NAME
+
 # Copy over sim and report to home
 cp bin/sim .
 cp bin/report .
