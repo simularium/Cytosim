@@ -10,15 +10,13 @@ RUN apt-get update && apt-get install -y \
 	python3-pip \
 	python3.8-venv
 
-
 # Change working directory
 WORKDIR home
 
 # Create python environment to install awscli
-
 RUN python3 -m venv .venv
 ENV PATH=".venv/bin:$PATH"
-RUN pip install awscli 
+RUN pip install awscli
 
 # Copy over source files and makefiles
 COPY src ./src
