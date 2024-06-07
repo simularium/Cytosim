@@ -1,0 +1,122 @@
+% Fiber under compression to measure buckling force
+
+
+% how fast the end gets compressed (µm/s) 150 nm / 10 µs
+
+% fast: 1.5e2, 1.5e3, 1.5e4
+% slow: 0.0015, 0.015, 0.15, 1.5, 15
+
+% the time step (s)
+
+
+% how frequently the compression is applied (time steps)
+
+
+% frequency you save frames (s)
+
+
+% total fiber length
+
+
+% ratio of total length that gets compressed
+
+
+
+% total compression amount
+
+
+% total simulation time (s)
+
+
+% compression_velocity:  150
+% compression_distance:  0.15
+% total_time: 0.001
+% 200 repeats
+% 1 frames saved per repeat
+% translation = 0.00075
+
+set simul system
+{
+    time_step = 5e-07
+    viscosity = 0.01
+}
+
+set space cell
+{
+    shape = sphere
+}
+
+new cell
+{
+    radius = 2
+}
+
+set fiber filament
+{
+    rigidity = 0.041
+    segmentation = 0.001
+    display = ( point=6,1; line=10,2; )
+}
+
+set hand binder
+{
+    % 10 events per second, 0.05 um binding radius
+
+    binding = 10, 0.005
+
+    % 0 events per second, infinite unbinding force
+
+    unbinding = 0, inf
+    bind_also_end = 1
+
+    display = ( width=3; size=12; color=green )
+}
+
+set single linker
+{
+    hand = binder
+    activity = fixed
+    stiffness = 10000000
+}
+
+
+new filament
+{
+    length = 0.5
+    position = 0 0 0
+    orientation = 1 0 0
+    % attach1 = linker, 0, minus_end
+    % attach2 = linker, 0, plus_end
+
+}
+
+new linker
+{
+    position = -0.25 0 0
+    attach = filament, 0, minus_end
+    mark = 1
+}
+
+% make a second linker 5 nm from the first, to keep minus end rotationally fixed
+
+new linker
+{
+    position = -0.24 0 0
+    attach = filament, 0.01, minus_end
+    mark = 2
+}
+
+% make a second linker 5 nm from the first, to keep minus end rotationally fixed
+
+% number of intervals for compression
+repeat 200
+{
+
+% this means you run one step and let it relax 9 time steps
+% and show it for 2 frames
+run 10 system { nb_frames = 1 }
+
+report fiber:points fiber_points.txt
+report single:position singles.txt
+
+}
