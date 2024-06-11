@@ -39,6 +39,7 @@ set simul system
 {
     time_step = 5e-07
     viscosity = 0.01
+    random_seed = {{RANDOM_SEED}}
 }
 
 set space cell
