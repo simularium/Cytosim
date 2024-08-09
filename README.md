@@ -1,3 +1,6 @@
+> [!NOTE]
+> This repository is adapted from the base Cytosim repository hosted at [https://gitlab.com/f-nedelec/cytosim](https://gitlab.com/f-nedelec/cytosim). Please see [CHANGELOG.md](CHANGELOG.md) for more information and a summary of changes.
+
 # Cytosim
 
 Cytosim is a cytoskeleton simulation suite designed to handle large systems of flexible filaments with associated proteins such as molecular motors. It is a versatile base that has been used to study actin and microtubule systems in 1D, 2D and 3D. It is built around a cross-platform C++ core engine running on UNIX, Mac OSX, GNU/Linux and within Cygwin on Windows. The code is modular and extensible, making Cytosim a convenient base that can be customized to meet particular tasks. Some of the most common tasks encountered during a simulation project are implemented in Python.
