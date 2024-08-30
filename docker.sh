@@ -40,6 +40,6 @@ case ${SIMULATION_TYPE} in
 	LOCAL)
         mkdir -p $OUTPUT_FILE_PATH
 		cp *.cmo $OUTPUT_FILE_PATH
-		cp *.txt $OUTPUT_FILE_PATH
+		cp reports/*.txt $OUTPUT_FILE_PATH
 	;;
 esac
